@@ -8,3 +8,11 @@
 /build
 /captures
 .externalNativeBuild
+
+# vscode
+.project
+.classpath
+.settings
+
+# intellij
+.idea

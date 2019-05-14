@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply from: 'jacoco.gradle'
 
 android {
@@ -42,12 +44,18 @@ dependencies {
     // Support libraries
     implementation deps.supportAppCompat
     implementation deps.supportDesign
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     // Test libraries
     testImplementation deps.junit
     testImplementation deps.hamcrest
     testImplementation deps.mockito
     testImplementation deps.robolectric
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
 }
 
 apply from: 'publish.gradle'
+repositories {
+    mavenCentral()
+}

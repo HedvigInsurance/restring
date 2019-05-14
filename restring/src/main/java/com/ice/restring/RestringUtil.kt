@@ -4,5 +4,7 @@ import java.util.Locale
 
 object RestringUtil {
     val currentLanguage: String
-        get() = Locale.getDefault().getLanguage()
+        get() = Locale.getDefault().language
+
+    const val DEFAULT_LANGUAGE = "__DEFAULT"
 }

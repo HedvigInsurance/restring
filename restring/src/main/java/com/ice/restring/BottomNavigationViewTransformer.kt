@@ -1,16 +1,13 @@
 package com.ice.restring
 
 import android.content.res.Resources
-import android.content.res.XmlResourceParser
 import android.support.design.widget.BottomNavigationView
 import android.util.AttributeSet
 import android.util.Pair
 import android.util.Xml
 import android.view.View
-
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
-
 import java.io.IOException
 import java.util.HashMap
 
@@ -30,8 +27,7 @@ class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
         val bottomNavigationView = view as BottomNavigationView?
 
         loop@ for (index in 0 until attrs.attributeCount) {
-            val attributeName = attrs.getAttributeName(index)
-            when (attributeName) {
+            when (attrs.getAttributeName(index)) {
                 ATTRIBUTE_APP_MENU, ATTRIBUTE_MENU -> {
                     val value = attrs.getAttributeValue(index)
                     if (value == null || !value.startsWith("@")) break@loop
@@ -42,10 +38,12 @@ class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
                     for (entry in itemStrings.entries) {
 
                         if (entry.value.title != 0) {
-                            bottomNavigationView!!.menu.findItem(entry.key).title = resources.getString(entry.value.title)
+                            bottomNavigationView!!.menu.findItem(entry.key).title =
+                                resources.getString(entry.value.title)
                         }
                         if (entry.value.titleCondensed != 0) {
-                            bottomNavigationView!!.menu.findItem(entry.key).titleCondensed = resources.getString(entry.value.titleCondensed)
+                            bottomNavigationView!!.menu.findItem(entry.key).titleCondensed =
+                                resources.getString(entry.value.titleCondensed)
                         }
                     }
                 }
@@ -67,7 +65,6 @@ class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
             e.printStackTrace()
             return HashMap()
         }
-
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
@@ -96,13 +93,13 @@ class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
         while (!reachedEndOfMenu) {
             when (eventType) {
                 XmlPullParser.START_TAG -> {
-                    tagName = parser.getName()
-                    if (tagName.equals(XML_ITEM)) {
+                    tagName = parser.name
+                    if (tagName == XML_ITEM) {
                         val item = parseMenuItem(attrs)
                         if (item != null) {
-                            menuItems.put(item!!.first, item!!.second)
+                            menuItems[item.first] = item.second
                         }
-                    } else if (tagName.equals(XML_MENU)) {
+                    } else if (tagName == XML_MENU) {
                         menuLevel++
                     }
                 }
@@ -165,15 +162,15 @@ class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
 
     companion object {
 
-        private val ATTRIBUTE_MENU = "menu"
-        private val ATTRIBUTE_APP_MENU = "app:menu"
-        private val ATTRIBUTE_ID = "id"
-        private val ATTRIBUTE_ANDROID_ID = "android:id"
-        private val ATTRIBUTE_TITLE = "title"
-        private val ATTRIBUTE_ANDROID_TITLE = "android:title"
-        private val ATTRIBUTE_TITLE_CONDENSED = "titleCondensed"
-        private val ATTRIBUTE_ANDROID_TITLE_CONDENSED = "android:titleCondensed"
-        private val XML_MENU = "menu"
-        private val XML_ITEM = "item"
+        private const val ATTRIBUTE_MENU = "menu"
+        private const val ATTRIBUTE_APP_MENU = "app:menu"
+        private const val ATTRIBUTE_ID = "id"
+        private const val ATTRIBUTE_ANDROID_ID = "android:id"
+        private const val ATTRIBUTE_TITLE = "title"
+        private const val ATTRIBUTE_ANDROID_TITLE = "android:title"
+        private const val ATTRIBUTE_TITLE_CONDENSED = "titleCondensed"
+        private const val ATTRIBUTE_ANDROID_TITLE_CONDENSED = "android:titleCondensed"
+        private const val XML_MENU = "menu"
+        private const val XML_ITEM = "item"
     }
 }

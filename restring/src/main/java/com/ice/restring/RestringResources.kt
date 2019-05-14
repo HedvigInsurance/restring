@@ -39,13 +39,16 @@ class RestringResources(
     }
 
     private fun getStringFromRepository(id: Int): String? {
-        try {
+        return try {
             val stringKey = getResourceEntryName(id)
-            return stringRepository.getString(RestringUtil.currentLanguage, stringKey)
+            var text = stringRepository.getString(RestringUtil.currentLanguage, stringKey)
+            if (text == null) {
+                text = stringRepository.getString(RestringUtil.DEFAULT_LANGUAGE, stringKey)
+            }
+            text
         } catch (ex: NotFoundException) {
-            return null
+            null
         }
-
     }
 
     private fun fromHtml(source: String): CharSequence {

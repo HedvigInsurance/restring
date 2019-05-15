@@ -7,14 +7,16 @@ import android.view.LayoutInflater
 /**
  * Main Restring context wrapper which wraps the context for providing another layout inflater & resources.
  */
-class RestringContextWrapper private constructor(base: Context,
-                                                          stringRepository: StringRepository,
-                                                          val viewTransformerManager: ViewTransformerManager) : ContextWrapper(CustomResourcesContextWrapper(
+class RestringContextWrapper private constructor(
+        base: Context,
+        stringRepository: StringRepository,
+        private val viewTransformerManager: ViewTransformerManager)
+    : ContextWrapper(CustomResourcesContextWrapper(
         base,
-        RestringResources(base.getResources(), stringRepository))) {
+        RestringResources(base.resources, stringRepository))) {
 
     private val layoutInflater by lazy {
-        RestringLayoutInflater(LayoutInflater.from(getBaseContext()), this, viewTransformerManager, true)
+        RestringLayoutInflater(LayoutInflater.from(baseContext), this, viewTransformerManager, true)
     }
 
     override fun getSystemService(name: String): Any? {

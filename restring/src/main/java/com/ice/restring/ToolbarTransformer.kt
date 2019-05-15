@@ -21,14 +21,13 @@ internal class ToolbarTransformer : ViewTransformerManager.Transformer {
         if (view == null || !viewType.isInstance(view)) {
             return view
         }
-        val resources = view!!.getContext().getResources()
+        val resources = view.context.resources
 
-        for (index in 0 until attrs.getAttributeCount()) {
-            val attributeName = attrs.getAttributeName(index)
-            when (attributeName) {
+        for (index in 0 until attrs.attributeCount) {
+            when (attrs.getAttributeName(index)) {
                 ATTRIBUTE_ANDROID_TITLE, ATTRIBUTE_TITLE -> {
                     val value = attrs.getAttributeValue(index)
-                    if (value != null && value!!.startsWith("@")) {
+                    if (value?.startsWith("@") == true) {
                         setTitleForView(view, resources.getString(attrs.getAttributeResourceValue(index, 0)))
                     }
                 }
@@ -39,7 +38,7 @@ internal class ToolbarTransformer : ViewTransformerManager.Transformer {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun setTitleForView(view: View, text: String) {
-        (view as Toolbar).setTitle(text)
+        (view as Toolbar).title = text
     }
 
     companion object {

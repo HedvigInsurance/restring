@@ -13,7 +13,7 @@ class MemoryStringRepository : StringRepository {
     private val strings = LinkedHashMap<String, MutableMap<String, String?>>()
 
     override fun setStrings(language: String, newStrings: MutableMap<String, String?>) {
-        strings.put(language, newStrings)
+        strings[language] = newStrings
     }
 
     override fun setString(language: String, key: String, value: String) {

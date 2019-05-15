@@ -14,14 +14,12 @@ class RestringConfig private constructor() {
         private var persist: Boolean = false
         private var stringsLoader: Restring.StringsLoader? = null
 
-        fun persist(persist: Boolean): Builder {
+        fun persist(persist: Boolean) = this.also {
             this.persist = persist
-            return this
         }
 
-        fun stringsLoader(loader: Restring.StringsLoader): Builder {
-            this.stringsLoader = loader
-            return this
+        fun stringsLoader(loader: Restring.StringsLoader) = this.also {
+            stringsLoader = loader
         }
 
         fun build(): RestringConfig {

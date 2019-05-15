@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import org.xmlpull.v1.XmlPullParser
 
 import java.lang.reflect.Field
-import java.lang.reflect.Method
 
 /**
  * Restring custom layout inflater. it puts hook on view creation, and tries to apply some transformations
@@ -24,8 +23,7 @@ import java.lang.reflect.Method
 class RestringLayoutInflater(original: LayoutInflater, newContext: Context, private val viewTransformerManager: ViewTransformerManager, cloned: Boolean) : LayoutInflater(original, newContext) {
 
     private var privateFactorySet = false
-    private var mConstructorArgs: Field? = null
-
+    private var constructorArgs: Field? = null
 
     init {
         if (!cloned) {
@@ -33,9 +31,8 @@ class RestringLayoutInflater(original: LayoutInflater, newContext: Context, priv
         }
     }
 
-    override fun cloneInContext(newContext: Context): LayoutInflater {
-        return RestringLayoutInflater(this, newContext, viewTransformerManager, true)
-    }
+    override fun cloneInContext(newContext: Context): LayoutInflater =
+            RestringLayoutInflater(this, newContext, viewTransformerManager, true)
 
     private fun initFactories() {
         if (getFactory2() != null) {
@@ -73,7 +70,7 @@ class RestringLayoutInflater(original: LayoutInflater, newContext: Context, priv
                 .getMethod(LayoutInflater::class.java, "setPrivateFactory")
 
         if (setPrivateFactoryMethod != null) {
-            val newFactory = PrivateWrapperFactory2(getContext() as Factory2)
+            val newFactory = PrivateWrapperFactory2(context as Factory2)
             ReflectionUtils.invokeMethod(
                     this as LayoutInflater,
                     setPrivateFactoryMethod,
@@ -142,22 +139,22 @@ class RestringLayoutInflater(original: LayoutInflater, newContext: Context, priv
 
         // If CustomViewCreation is off skip this.
         if (view == null && name.indexOf('.') > -1) {
-            if (mConstructorArgs == null)
-                mConstructorArgs = ReflectionUtils.getField(LayoutInflater::class.java, "mConstructorArgs")
+            if (constructorArgs == null)
+                constructorArgs = ReflectionUtils.getField(LayoutInflater::class.java, "constructorArgs")
 
-            val mConstructorArgsArr = ReflectionUtils.getValue(mConstructorArgs, this) as Array<Any>
+            val mConstructorArgsArr = ReflectionUtils.getValue(constructorArgs, this) as Array<Any>
             val lastContext = mConstructorArgsArr[0]
             // The LayoutInflater actually finds out the correct context to use. We just need to set
             // it on the mConstructor for the internal method.
             // Set the constructor ars up for the createView, not sure why we can't pass these in.
             mConstructorArgsArr[0] = viewContext
-            ReflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr)
+            ReflectionUtils.setValue(constructorArgs, this, mConstructorArgsArr)
             try {
                 view = createView(name, null, attrs)
             } catch (ignored: ClassNotFoundException) {
             } finally {
                 mConstructorArgsArr[0] = lastContext
-                ReflectionUtils.setValue(mConstructorArgs, this, mConstructorArgsArr)
+                ReflectionUtils.setValue(constructorArgs, this, mConstructorArgsArr)
             }
         }
         return view

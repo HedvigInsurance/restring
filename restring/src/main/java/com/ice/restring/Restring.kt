@@ -37,9 +37,8 @@ object Restring {
      * @param base context of an activity.
      * @return the Restring wrapped context.
      */
-    fun wrapContext(base: Context): ContextWrapper {
-        return RestringContextWrapper.wrap(base, stringRepository, viewTransformerManager)
-    }
+    fun wrapContext(base: Context): ContextWrapper =
+        RestringContextWrapper.wrap(base, stringRepository, viewTransformerManager)
 
     /**
      * Set strings of a language.
@@ -47,9 +46,8 @@ object Restring {
      * @param language   the strings are for.
      * @param newStrings the strings of the language.
      */
-    fun setStrings(language: String, newStrings: MutableMap<String, String?>) {
+    fun setStrings(language: String, newStrings: MutableMap<String, String?>) =
         stringRepository.setStrings(language, newStrings)
-    }
 
     /**
      * Set a single string for a language.
@@ -58,9 +56,8 @@ object Restring {
      * @param key      the string key.
      * @param value    the string value.
      */
-    fun setString(language: String, key: String, value: String) {
+    fun setString(language: String, key: String, value: String) =
         stringRepository.setString(language, key, value)
-    }
 
     private fun initStringRepository(context: Context, config: RestringConfig) {
         if (config.isPersist) {

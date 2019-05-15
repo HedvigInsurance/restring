@@ -56,14 +56,14 @@ class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
     private fun getMenuItemsStrings(resources: Resources, resId: Int): Map<Int, MenuItemStrings> {
         val parser = resources.getLayout(resId)
         val attrs = Xml.asAttributeSet(parser)
-        try {
-            return parseMenu(parser, attrs)
+        return try {
+            parseMenu(parser, attrs)
         } catch (e: XmlPullParserException) {
             e.printStackTrace()
-            return HashMap()
+            HashMap()
         } catch (e: IOException) {
             e.printStackTrace()
-            return HashMap()
+            HashMap()
         }
     }
 
@@ -77,8 +77,8 @@ class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
         // This loop will skip to the menu start tag
         do {
             if (eventType == XmlPullParser.START_TAG) {
-                tagName = parser.getName()
-                if (tagName.equals(XML_MENU)) {
+                tagName = parser.name
+                if (tagName == XML_MENU) {
                     eventType = parser.next()
                     break
                 }
@@ -95,8 +95,7 @@ class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
                 XmlPullParser.START_TAG -> {
                     tagName = parser.name
                     if (tagName == XML_ITEM) {
-                        val item = parseMenuItem(attrs)
-                        if (item != null) {
+                        parseMenuItem(attrs)?.let { item ->
                             menuItems[item.first] = item.second
                         }
                     } else if (tagName == XML_MENU) {
@@ -105,8 +104,7 @@ class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
                 }
 
                 XmlPullParser.END_TAG -> {
-                    tagName = parser.getName()
-                    if (tagName.equals(XML_MENU)) {
+                    if (parser.name == XML_MENU) {
                         menuLevel--
                         if (menuLevel <= 0) {
                             reachedEndOfMenu = true
@@ -132,16 +130,14 @@ class BottomNavigationViewTransformer : ViewTransformerManager.Transformer {
                     menuId = attrs.getAttributeResourceValue(index, 0)
                 }
                 ATTRIBUTE_ANDROID_TITLE, ATTRIBUTE_TITLE -> {
-                    val value = attrs.getAttributeValue(index)
-                    if (value == null || !value!!.startsWith("@")) break@loop
+                    if (attrs.getAttributeValue(index)?.startsWith("@") != true) break@loop
                     if (menuItemStrings == null) {
                         menuItemStrings = MenuItemStrings()
                     }
                     menuItemStrings.title = attrs.getAttributeResourceValue(index, 0)
                 }
                 ATTRIBUTE_ANDROID_TITLE_CONDENSED, ATTRIBUTE_TITLE_CONDENSED -> {
-                    val value = attrs.getAttributeValue(index)
-                    if (value == null || !value!!.startsWith("@")) break@loop
+                    if (attrs.getAttributeValue(index)?.startsWith("@") != true) break@loop
                     if (menuItemStrings == null) {
                         menuItemStrings = MenuItemStrings()
                     }

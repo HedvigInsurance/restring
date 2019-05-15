@@ -16,24 +16,18 @@ object ReflectionUtils {
 
     private val TAG = ReflectionUtils::class.java.simpleName
 
-    fun getField(clazz: Class<*>, fieldName: String): Field? {
-        try {
-            val f = clazz.getDeclaredField(fieldName)
-            f.isAccessible = true
-            return f
-        } catch (ignored: NoSuchFieldException) {
-        }
-
-        return null
+    fun getField(clazz: Class<*>, fieldName: String): Field? = try {
+        val f = clazz.getDeclaredField(fieldName)
+        f.isAccessible = true
+        f
+    } catch (ignored: NoSuchFieldException) {
+        null
     }
 
-    fun getValue(field: Field?, obj: Any): Any? {
-        try {
-            return field?.get(obj)
-        } catch (ignored: IllegalAccessException) {
-        }
-
-        return null
+    fun getValue(field: Field?, obj: Any): Any? = try {
+        field?.get(obj)
+    } catch (ignored: IllegalAccessException) {
+        null
     }
 
     fun setValue(field: Field?, obj: Any, value: Any) {
@@ -41,7 +35,6 @@ object ReflectionUtils {
             field?.set(obj, value)
         } catch (ignored: IllegalAccessException) {
         }
-
     }
 
     fun getMethod(clazz: Class<*>, methodName: String): Method? {
@@ -57,13 +50,11 @@ object ReflectionUtils {
 
     fun invokeMethod(obj: Any, method: Method?, args: LayoutInflater.Factory2) {
         try {
-            if (method == null) return
-            method.invoke(obj, args)
+            method?.invoke(obj, args)
         } catch (e: IllegalAccessException) {
             Log.d(TAG, "Can't invoke method using reflection", e)
         } catch (e: InvocationTargetException) {
             Log.d(TAG, "Can't invoke method using reflection", e)
         }
-
     }
 }

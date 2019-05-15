@@ -10,8 +10,8 @@ import android.text.Html
  * that will be returned, otherwise it will fallback to the original resource strings.
  */
 class RestringResources(
-    res: Resources,
-    private val stringRepository: StringRepository
+        res: Resources,
+        private val stringRepository: StringRepository
 ) : Resources(res.assets, res.displayMetrics, res.configuration) {
 
     @Throws(NotFoundException::class)
@@ -22,9 +22,7 @@ class RestringResources(
 
     override fun getString(id: Int, vararg formatArgs: Any): String {
         val value = getStringFromRepository(id)
-        return if (value != null) {
-            String.format(value, formatArgs)
-        } else super.getString(id, formatArgs)
+        return value?.let { String.format(value, formatArgs) } ?: super.getString(id, formatArgs)
     }
 
     @Throws(NotFoundException::class)
@@ -38,24 +36,21 @@ class RestringResources(
         return value?.let { fromHtml(it) } ?: super.getText(id, def)
     }
 
-    private fun getStringFromRepository(id: Int): String? {
-        return try {
-            val stringKey = getResourceEntryName(id)
-            var text = stringRepository.getString(RestringUtil.currentLanguage, stringKey)
-            if (text == null) {
-                text = stringRepository.getString(RestringUtil.DEFAULT_LANGUAGE, stringKey)
-            }
-            text
-        } catch (ex: NotFoundException) {
-            null
+    private fun getStringFromRepository(id: Int): String? = try {
+        val stringKey = getResourceEntryName(id)
+        var text = stringRepository.getString(RestringUtil.currentLanguage, stringKey)
+        if (text == null) {
+            text = stringRepository.getString(RestringUtil.DEFAULT_LANGUAGE, stringKey)
         }
+        text
+    } catch (ex: NotFoundException) {
+        null
     }
 
-    private fun fromHtml(source: String): CharSequence {
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            Html.fromHtml(source)
-        } else {
-            Html.fromHtml(source, Html.FROM_HTML_MODE_COMPACT)
-        }
+    private fun fromHtml(source: String): CharSequence = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+        Html.fromHtml(source)
+    } else {
+        Html.fromHtml(source, Html.FROM_HTML_MODE_COMPACT)
     }
+
 }

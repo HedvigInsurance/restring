@@ -36,13 +36,12 @@ class SharedPrefStringRepository(context: Context) : StringRepository {
         saveStrings(language, keyValues)
     }
 
-    override fun getString(language: String, key: String): String? {
-        return memoryStringRepository.getString(language, key)
-    }
+    override fun getString(language: String, key: String): String? =
+            memoryStringRepository.getString(language, key)
 
-    override fun getStrings(language: String): MutableMap<String, String?> {
-        return memoryStringRepository.getStrings(language)
-    }
+    override fun getStrings(language: String): MutableMap<String, String?> =
+            memoryStringRepository.getStrings(language)
+
     private fun loadStrings() {
         val strings = sharedPreferences.all
         for (entry in strings.entries) {

@@ -1,9 +1,9 @@
 ext {
-    bintrayRepo = 'hedvig-restring'
+    bintrayRepo = 'restring'
     bintrayName = 'hedvig'
 
     publishedGroupId = 'com.hedvig.restring'
-    artifact = 'hedvig-restring'
+    artifact = 'restring'
     libraryVersion = '1.0.0'
 
     libraryName = 'Hedvig-restring'

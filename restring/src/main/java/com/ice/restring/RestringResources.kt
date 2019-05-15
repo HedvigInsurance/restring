@@ -19,8 +19,8 @@ class RestringResources(
             getStringFromRepository(id) ?: super.getString(id)
 
     override fun getString(id: Int, vararg formatArgs: Any): String =
-            getStringFromRepository(id)?.let { String.format(it, formatArgs) }
-                    ?: super.getString(id, formatArgs)
+            getStringFromRepository(id)?.let { String.format(it, *formatArgs) }
+                    ?: super.getString(id, *formatArgs)
 
     @Throws(NotFoundException::class)
     override fun getText(id: Int): CharSequence =

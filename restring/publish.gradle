@@ -1,23 +1,23 @@
 ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'restring'
+    bintrayRepo = 'hedvig-restring'
+    bintrayName = 'hedvig'
 
-    publishedGroupId = 'com.ice.restring'
-    artifact = 'restring'
+    publishedGroupId = 'com.hedvig.restring'
+    artifact = 'hedvig-restring'
     libraryVersion = '1.0.0'
 
-    libraryName = 'Restring'
+    libraryName = 'Hedvig-restring'
     libraryDescription = 'Replace Strings dynamically, or provide new translations, for Android'
-    siteUrl = 'https://github.com/hamidness/restring'
-    gitUrl = 'https://github.com/hamidness/restring.git'
+    siteUrl = 'https://github.com/HedvigInsurance'
+    gitUrl = 'https://github.com/HedvigInsurance/restring.git'
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
 
-    developerId = 'hamidfri'
-    developerName = 'Hamid Gharehdaghi'
-    developerEmail = 'hamidice@gmail.com'
-    organization = ''
+    developerId = System.getenv('BINTRAY_USER')
+    developerName = System.getenv('BINTRAY_NAME')
+    developerEmail = System.getenv('BINTRAY_EMAIL')
+    organization = 'hedvig'
 }
 
 apply from: 'install.gradle'

@@ -38,7 +38,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 artifacts {
-    archives javadocJar
+//    archives javadocJar
     archives sourcesJar
 }
 /*--------------------------------*/
@@ -55,8 +55,8 @@ String localProperty(propertyName) {
 }
 
 bintray {
-    user = localProperty("bintrayUser")
-    key = localProperty("bintrayApiKey")
+    user = System.getenv("BINTRAY_USER")
+    key = System.getenv("BINTRAY_KEY")
 
     configurations = ['archives']
     pkg {

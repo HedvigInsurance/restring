@@ -15,26 +15,19 @@ class RestringResources(
 ) : Resources(res.assets, res.displayMetrics, res.configuration) {
 
     @Throws(NotFoundException::class)
-    override fun getString(id: Int): String {
-        val value = getStringFromRepository(id)
-        return value ?: super.getString(id)
-    }
+    override fun getString(id: Int): String =
+            getStringFromRepository(id) ?: super.getString(id)
 
-    override fun getString(id: Int, vararg formatArgs: Any): String {
-        val value = getStringFromRepository(id)
-        return value?.let { String.format(value, formatArgs) } ?: super.getString(id, formatArgs)
-    }
+    override fun getString(id: Int, vararg formatArgs: Any): String =
+            getStringFromRepository(id)?.let { String.format(it, formatArgs) }
+                    ?: super.getString(id, formatArgs)
 
     @Throws(NotFoundException::class)
-    override fun getText(id: Int): CharSequence {
-        val value = getStringFromRepository(id)
-        return value?.let { fromHtml(it) } ?: super.getText(id)
-    }
+    override fun getText(id: Int): CharSequence =
+            getStringFromRepository(id)?.let { fromHtml(it) } ?: super.getText(id)
 
-    override fun getText(id: Int, def: CharSequence): CharSequence {
-        val value = getStringFromRepository(id)
-        return value?.let { fromHtml(it) } ?: super.getText(id, def)
-    }
+    override fun getText(id: Int, def: CharSequence): CharSequence =
+            getStringFromRepository(id)?.let { fromHtml(it) } ?: super.getText(id, def)
 
     private fun getStringFromRepository(id: Int): String? = try {
         val stringKey = getResourceEntryName(id)

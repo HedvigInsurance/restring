@@ -32,9 +32,9 @@ class TextViewTransformerTest {
     private val context: Context
         get() {
             val context = Mockito.spy(RuntimeEnvironment.application)
-            val resources = Mockito.spy(context.getResources())
+            val resources = Mockito.spy(context.resources)
 
-            doReturn(resources).`when`(context).getResources()
+            doReturn(resources).`when`(context).resources
             doReturn(TEXT_ATTR_VALUE).`when`(resources).getString(TEXT_RES_ID)
             doReturn(HINT_ATTR_VALUE).`when`(resources).getString(HINT_RES_ID)
 
@@ -94,7 +94,7 @@ class TextViewTransformerTest {
 
     private fun getAttributeSet(withAndroidPrefix: Boolean): AttributeSet {
         val attributeSet = Mockito.mock(AttributeSet::class.java)
-        `when`(attributeSet.getAttributeCount()).thenReturn(TEXT_ATTR_INDEX + 2)
+        `when`(attributeSet.attributeCount).thenReturn(TEXT_ATTR_INDEX + 2)
 
         `when`(attributeSet.getAttributeName(anyInt())).thenReturn("other_attribute")
         `when`(attributeSet.getAttributeName(TEXT_ATTR_INDEX)).thenReturn((if (withAndroidPrefix) "android:" else "") + TEXT_ATTR_KEY)
@@ -108,14 +108,14 @@ class TextViewTransformerTest {
     }
 
     companion object {
-        private val TEXT_ATTR_INDEX = 3
-        private val TEXT_RES_ID = 0x7f0f0123
-        private val TEXT_ATTR_KEY = "text"
-        private val TEXT_ATTR_VALUE = "TEXT_ATTR_VALUE"
+        private const val TEXT_ATTR_INDEX = 3
+        private const val TEXT_RES_ID = 0x7f0f0123
+        private const val TEXT_ATTR_KEY = "text"
+        private const val TEXT_ATTR_VALUE = "TEXT_ATTR_VALUE"
 
-        private val HINT_ATTR_INDEX = 2
-        private val HINT_RES_ID = 0x7f0f0124
-        private val HINT_ATTR_KEY = "hint"
-        private val HINT_ATTR_VALUE = "HINT_ATTR_VALUE"
+        private const val HINT_ATTR_INDEX = 2
+        private const val HINT_RES_ID = 0x7f0f0124
+        private const val HINT_ATTR_KEY = "hint"
+        private const val HINT_ATTR_VALUE = "HINT_ATTR_VALUE"
     }
 }

@@ -1,6 +1,7 @@
 package com.ice.restring
 
 import com.ice.restring.shadow.MyShadowAsyncTask
+import com.ice.restring.util.javaClass
 
 import org.junit.Before
 import org.junit.Test
@@ -21,7 +22,7 @@ import org.mockito.Mockito.`when`
 
 
 @RunWith(RobolectricTestRunner::class)
-@Config(shadows = { MyShadowAsyncTask.class })
+@Config(shadows = [MyShadowAsyncTask::class])
 class StringsLoaderTaskTest {
 
     @Before
@@ -31,10 +32,10 @@ class StringsLoaderTaskTest {
     @Test
     fun shouldLoadStringsAndSaveInRepository() {
         val langs = Arrays.asList("en", "fa")
-        val enStrings = HashMap<String, String>()
+        val enStrings = HashMap<String, String?>()
         enStrings["string1"] = "value1"
         enStrings["string2"] = "value2"
-        val deStrings = HashMap<String, String>()
+        val deStrings = HashMap<String, String?>()
         deStrings["string3"] = "value3"
         deStrings["string4"] = "value4"
 
@@ -51,12 +52,12 @@ class StringsLoaderTaskTest {
         Robolectric.flushBackgroundThreadScheduler()
         Robolectric.flushForegroundThreadScheduler()
 
-        val enCaptor: ArgumentCaptor<MutableMap<String, String?>> = ArgumentCaptor.forClass(MutableMap<out String, String?>::class.java)
+        val enCaptor: ArgumentCaptor<MutableMap<String, String?>> = ArgumentCaptor.forClass(javaClass<MutableMap<String, String?>>())
         verify(repository).setStrings(eq("en"), enCaptor.capture())
         assertEquals(enStrings, enCaptor.getValue())
 
-        val deCaptor = ArgumentCaptor.forClass(Map<*, *>::class.java)
+        val deCaptor = ArgumentCaptor.forClass(javaClass<MutableMap<String, String?>>())
         verify(repository).setStrings(eq("fa"), deCaptor.capture())
-        assertEquals(deStrings, deCaptor.getValue())
+        assertEquals(deStrings, deCaptor.value)
     }
 }

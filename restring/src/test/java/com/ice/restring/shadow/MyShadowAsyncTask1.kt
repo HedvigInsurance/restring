@@ -7,10 +7,10 @@ import org.robolectric.shadows.ShadowAsyncTask
 
 import java.util.concurrent.Executor
 
-@Implements(AsyncTask<*, *, *>::class)
+@Implements(AsyncTask::class)
 class MyShadowAsyncTask<Params, Progress, Result> : ShadowAsyncTask<Params, Progress, Result>() {
 
-    fun executeOnExecutor(executor: Executor, vararg params: Params): AsyncTask<Params, Progress, Result> {
-        return super.execute(params)
+    override fun executeOnExecutor(executor: Executor, vararg params: Params): AsyncTask<Params, Progress, Result> {
+        return super.execute(*params)
     }
 }

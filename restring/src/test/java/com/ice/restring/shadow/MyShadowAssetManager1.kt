@@ -13,11 +13,11 @@ class MyShadowAssetManager : ShadowAssetManager() {
 
     private val resourceEntryNames = LinkedHashMap<Int, String>()
 
-    fun getResourceText(id: Int): CharSequence {
+    override fun getResourceText(id: Int): CharSequence {
         return "@$id"
     }
 
-    fun getResourceEntryName(resid: Int): String? {
+    override fun getResourceEntryName(resid: Int): String? {
         return if (resourceEntryNames.containsKey(resid)) {
             resourceEntryNames[resid]
         } else super.getResourceEntryName(resid)

@@ -30,16 +30,16 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 
 @RunWith(RobolectricTestRunner::class)
-@Config(shadows = { MyShadowAssetManager.class })
+@Config(shadows = [MyShadowAssetManager::class])
 class RestringContextWrapperTest {
 
     private var restringContextWrapper: RestringContextWrapper? = null
-    private var context: Context? = null
+    lateinit var context: Context
     private var originalResources: Resources? = null
     @Mock
-    private val stringRepository: StringRepository? = null
+    lateinit var stringRepository: StringRepository
     @Mock
-    private val transformerManager: ViewTransformerManager? = null
+    lateinit var transformerManager: ViewTransformerManager
 
     private val language: String
         get() = Locale.getDefault().language
@@ -48,9 +48,9 @@ class RestringContextWrapperTest {
     fun setUp() {
         MockitoAnnotations.initMocks(this)
         context = RuntimeEnvironment.application
-        originalResources = context!!.resources
+        originalResources = context.resources
 
-        `when`(transformerManager!!.transform(any(), any())).thenAnswer({ i -> i.getArgument(0) })
+        `when`(transformerManager.transform(any(), any())).thenAnswer { i -> i.getArgument(0) }
         restringContextWrapper = RestringContextWrapper.wrap(
                 context,
                 stringRepository,
@@ -81,13 +81,13 @@ class RestringContextWrapperTest {
         verify(transformerManager, atLeastOnce()).transform(captor.capture(), any())
         for (i in 0 until viewGroup.childCount) {
             val child = viewGroup.getChildAt(i)
-            captor.getAllValues().contains(child)
+            captor.allValues.contains(child)
         }
     }
 
     companion object {
-        private val STR_RES_ID = 0x7f0f0123
-        private val STR_KEY = "STR_KEY"
-        private val STR_VALUE = "STR_VALUE"
+        private const val STR_RES_ID = 0x7f0f0123
+        private const val STR_KEY = "STR_KEY"
+        private const val STR_VALUE = "STR_VALUE"
     }
 }

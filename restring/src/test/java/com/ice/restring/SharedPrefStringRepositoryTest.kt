@@ -58,8 +58,8 @@ class SharedPrefStringRepositoryTest {
         assertEquals(newRepository.getString(LANGUAGE, "key5"), "aNewValue")
     }
 
-    private fun generateStrings(count: Int): MutableMap<String, String> {
-        val strings = LinkedHashMap<String, String>()
+    private fun generateStrings(count: Int): MutableMap<String, String?> {
+        val strings = LinkedHashMap<String, String?>()
         for (i in 0 until count) {
             strings["key$i"] = "value$i"
         }

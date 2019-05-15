@@ -73,7 +73,7 @@ class SupportToolbarTransformerTest {
 
     private fun getAttributeSet(withAppPrefix: Boolean): AttributeSet {
         val attributeSet = Mockito.mock(AttributeSet::class.java)
-        `when`(attributeSet.getAttributeCount()).thenReturn(TITLE_ATTR_INDEX + 2)
+        `when`(attributeSet.attributeCount).thenReturn(TITLE_ATTR_INDEX + 2)
 
         `when`(attributeSet.getAttributeName(anyInt())).thenReturn("other_attribute")
         `when`(attributeSet.getAttributeName(TITLE_ATTR_INDEX)).thenReturn((if (withAppPrefix) "app:" else "") + TITLE_ATTR_KEY)
@@ -84,9 +84,9 @@ class SupportToolbarTransformerTest {
     }
 
     companion object {
-        private val TITLE_ATTR_INDEX = 3
-        private val TITLE_RES_ID = 0x7f0f0123
-        private val TITLE_ATTR_KEY = "title"
-        private val TITLE_ATTR_VALUE = "TITLE_ATTR_VALUE"
+        private const val TITLE_ATTR_INDEX = 3
+        private const val TITLE_RES_ID = 0x7f0f0123
+        private const val TITLE_ATTR_KEY = "title"
+        private const val TITLE_ATTR_VALUE = "TITLE_ATTR_VALUE"
     }
 }

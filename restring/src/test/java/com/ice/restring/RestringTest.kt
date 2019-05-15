@@ -18,7 +18,7 @@ import org.robolectric.annotation.Config
 import java.util.*
 
 @RunWith(RobolectricTestRunner::class)
-@Config(shadows = { MyShadowAsyncTask.class })
+@Config(shadows = [MyShadowAsyncTask::class])
 class RestringTest {
 
     private val language: String

@@ -31,7 +31,7 @@ class ViewTransformerManagerTest {
         val textView = TextView(RuntimeEnvironment.application)
 
         val transformer = Mockito.mock(ViewTransformerManager.Transformer::class.java)
-        doReturn(TextView::class.java).`when`(transformer).getViewType()
+        doReturn(TextView::class.java).`when`(transformer).viewType
         `when`(transformer.transform(any(), any())).thenReturn(textView)
         transformerManager!!.registerTransformer(transformer)
 

@@ -21,23 +21,23 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = { 16, 19, 21, 23, 24, 26 })
+@Config(sdk = [16, 19, 21, 23, 24, 26])
 class RestringLayoutInflaterTest {
 
     @Mock
-    private val transformerManager: ViewTransformerManager? = null
+    lateinit var transformerManager: ViewTransformerManager
     private var restringLayoutInflater: RestringLayoutInflater? = null
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        `when`(transformerManager!!.transform(any(), any())).thenAnswer({ invocation -> invocation.getArgument(0) } as Answer<View>
-        )
+        `when`(transformerManager.transform(any(), any())).thenAnswer { invocation -> invocation.getArgument(0) }
+
         RuntimeEnvironment.application.setTheme(R.style.Theme_AppCompat)
         restringLayoutInflater = RestringLayoutInflater(
                 LayoutInflater.from(RuntimeEnvironment.application),
                 RuntimeEnvironment.application,
-                transformerManager!!,
+                transformerManager,
                 false
         )
     }
@@ -50,7 +50,7 @@ class RestringLayoutInflaterTest {
         verify(transformerManager, atLeastOnce()).transform(captor.capture(), any())
         for (i in 0 until viewGroup.childCount) {
             val child = viewGroup.getChildAt(i)
-            captor.getAllValues().contains(child)
+            captor.allValues.contains(child)
         }
     }
 }

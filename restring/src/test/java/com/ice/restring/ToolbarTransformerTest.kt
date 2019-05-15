@@ -31,9 +31,9 @@ class ToolbarTransformerTest {
     private val context: Context
         get() {
             val context = Mockito.spy(RuntimeEnvironment.application)
-            val resources = Mockito.spy(context.getResources())
+            val resources = Mockito.spy(context.resources)
 
-            doReturn(resources).`when`(context).getResources()
+            doReturn(resources).`when`(context).resources
             doReturn(TITLE_ATTR_VALUE).`when`(resources).getString(TITLE_RES_ID)
 
             return context
@@ -73,7 +73,7 @@ class ToolbarTransformerTest {
 
     private fun getAttributeSet(withAndroidPrefix: Boolean): AttributeSet {
         val attributeSet = Mockito.mock(AttributeSet::class.java)
-        `when`(attributeSet.getAttributeCount()).thenReturn(TITLE_ATTR_INDEX + 2)
+        `when`(attributeSet.attributeCount).thenReturn(TITLE_ATTR_INDEX + 2)
 
         `when`(attributeSet.getAttributeName(anyInt())).thenReturn("other_attribute")
         `when`(attributeSet.getAttributeName(TITLE_ATTR_INDEX)).thenReturn((if (withAndroidPrefix) "android:" else "") + TITLE_ATTR_KEY)
@@ -84,9 +84,9 @@ class ToolbarTransformerTest {
     }
 
     companion object {
-        private val TITLE_ATTR_INDEX = 3
-        private val TITLE_RES_ID = 0x7f0f0123
-        private val TITLE_ATTR_KEY = "title"
-        private val TITLE_ATTR_VALUE = "TITLE_ATTR_VALUE"
+        private const val TITLE_ATTR_INDEX = 3
+        private const val TITLE_RES_ID = 0x7f0f0123
+        private const val TITLE_ATTR_KEY = "title"
+        private const val TITLE_ATTR_VALUE = "TITLE_ATTR_VALUE"
     }
 }

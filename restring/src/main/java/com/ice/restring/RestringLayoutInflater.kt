@@ -128,7 +128,7 @@ class RestringLayoutInflater(original: LayoutInflater, newContext: Context, priv
     }
 
     private fun createCustomViewInternal(parent: View?, view: View?, name: String, viewContext: Context, attrs: AttributeSet): View? {
-        var view = view
+        var ret = view
         // I by no means advise anyone to do this normally, but Google have locked down access to
         // the createView() method, so we never get a callback with attributes at the end of the
         // createViewFromTag chain (which would solve all this unnecessary rubbish).
@@ -139,6 +139,9 @@ class RestringLayoutInflater(original: LayoutInflater, newContext: Context, priv
 
         // If CustomViewCreation is off skip this.
         if (view == null && name.indexOf('.') > -1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                return createView(viewContext, name, null, attrs)
+            }
             if (constructorArgs == null)
                 constructorArgs = ReflectionUtils.getField(LayoutInflater::class.java, "mConstructorArgs")
 
@@ -150,14 +153,14 @@ class RestringLayoutInflater(original: LayoutInflater, newContext: Context, priv
             mConstructorArgsArr[0] = viewContext
             ReflectionUtils.setValue(constructorArgs, this, mConstructorArgsArr)
             try {
-                view = createView(name, null, attrs)
+                ret = createView(name, null, attrs)
             } catch (ignored: ClassNotFoundException) {
             } finally {
                 mConstructorArgsArr[0] = lastContext
                 ReflectionUtils.setValue(constructorArgs, this, mConstructorArgsArr)
             }
         }
-        return view
+        return ret
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

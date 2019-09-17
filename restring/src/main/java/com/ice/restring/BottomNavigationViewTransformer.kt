@@ -1,7 +1,7 @@
 package com.ice.restring
 
 import android.content.res.Resources
-import android.support.design.widget.BottomNavigationView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.util.AttributeSet
 import android.util.Pair
 import android.util.Xml

@@ -4,7 +4,7 @@ ext {
 
     publishedGroupId = 'com.hedvig.restring'
     artifact = 'restring'
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.1.0'
 
     libraryName = 'Hedvig-restring'
     libraryDescription = 'Replace Strings dynamically, or provide new translations, for Android'

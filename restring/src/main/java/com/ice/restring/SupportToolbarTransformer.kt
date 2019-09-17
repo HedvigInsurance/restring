@@ -1,6 +1,6 @@
 package com.ice.restring
 
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.widget.Toolbar
 import android.util.AttributeSet
 import android.view.View
 

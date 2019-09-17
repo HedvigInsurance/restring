@@ -128,9 +128,6 @@ class RestringLayoutInflater(original: LayoutInflater, newContext: Context, priv
     }
 
     private fun createCustomViewInternal(parent: View?, view: View?, name: String, viewContext: Context, attrs: AttributeSet): View? {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return createView(viewContext, name, null, attrs)
-        }
         var ret = view
         // I by no means advise anyone to do this normally, but Google have locked down access to
         // the createView() method, so we never get a callback with attributes at the end of the
@@ -142,6 +139,9 @@ class RestringLayoutInflater(original: LayoutInflater, newContext: Context, priv
 
         // If CustomViewCreation is off skip this.
         if (view == null && name.indexOf('.') > -1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                return createView(viewContext, name, null, attrs)
+            }
             if (constructorArgs == null)
                 constructorArgs = ReflectionUtils.getField(LayoutInflater::class.java, "mConstructorArgs")
 
